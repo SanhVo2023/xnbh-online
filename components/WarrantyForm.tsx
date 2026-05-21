@@ -5,8 +5,9 @@ import { motion } from "framer-motion";
 import { submissionSchema, type SubmitResponse, type SubmitSuccess } from "@/lib/validation";
 import Reveal from "./Reveal";
 import SuccessModal from "./SuccessModal";
+import ChannelSelect from "./ChannelSelect";
 
-type Errors = Partial<Record<"hoTen" | "phone" | "email" | "agree", string>>;
+type Errors = Partial<Record<"hoTen" | "phone" | "email" | "channel" | "agree", string>>;
 
 const FIELD =
   "w-full rounded-2xl border border-line bg-white px-4 py-3.5 text-navy-800 placeholder:text-muted/60 outline-none transition-all duration-200 focus:border-gold-500/70 focus:ring-2 focus:ring-gold-400/30";
@@ -16,6 +17,7 @@ export default function WarrantyForm() {
     hoTen: "",
     phone: "",
     email: "",
+    channel: "",
     agree: false,
     website: "", // honeypot
   });
@@ -64,7 +66,7 @@ export default function WarrantyForm() {
 
       setStatus("idle");
       setSuccess(json);
-      setForm({ hoTen: "", phone: "", email: "", agree: false, website: "" });
+      setForm({ hoTen: "", phone: "", email: "", channel: "", agree: false, website: "" });
     } catch {
       setStatus("error");
       setServerError("Không thể kết nối máy chủ. Vui lòng kiểm tra mạng và thử lại.");
@@ -140,6 +142,14 @@ export default function WarrantyForm() {
                   autoComplete="email"
                   value={form.email}
                   onChange={(e) => set("email", e.target.value)}
+                />
+              </Field>
+
+              <Field label="Kênh mua hàng" error={errors.channel}>
+                <ChannelSelect
+                  value={form.channel}
+                  onChange={(v) => set("channel", v)}
+                  invalid={Boolean(errors.channel)}
                 />
               </Field>
 

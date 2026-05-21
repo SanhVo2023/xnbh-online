@@ -80,6 +80,7 @@ export async function POST(req: NextRequest) {
     phoneRaw: parsed.data.phone,
     phoneNorm,
     email: parsed.data.email || "",
+    channel: parsed.data.channel,
     source: req.headers.get("referer") || "",
     userAgent: req.headers.get("user-agent") || "",
     ip,

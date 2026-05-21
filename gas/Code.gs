@@ -53,6 +53,7 @@ var SUBMISSION_HEADERS = [
   "timestamp", "hoTen", "phoneRaw", "phoneNorm", "email",
   "voucherCode", "voucherValue", "allocatedAt", "expiryAt",
   "smsStatus", "smsSentAt", "smsResult", "source", "userAgent", "ip",
+  "channel",
 ];
 var VOUCHER_HEADERS = ["code", "value", "status", "phoneNorm", "allocatedAt"];
 
@@ -106,6 +107,14 @@ function ensureSheet_(ss, name, headers) {
       .setFontWeight("bold").setBackground("#16235B").setFontColor("#ffffff");
     sh.setFrozenRows(1);
     sh.autoResizeColumns(1, headers.length);
+  } else {
+    // Migration: append any new trailing headers added since the sheet was built.
+    var have = sh.getLastColumn();
+    if (have < headers.length) {
+      var missing = headers.slice(have);
+      sh.getRange(1, have + 1, 1, missing.length).setValues([missing])
+        .setFontWeight("bold").setBackground("#16235B").setFontColor("#ffffff");
+    }
   }
   return sh;
 }
@@ -160,6 +169,7 @@ function doPost(e) {
 
     var hoTen = String(body.hoTen || "").trim().slice(0, 80);
     var email = String(body.email || "").trim().slice(0, 120);
+    var channel = String(body.channel || "").trim().slice(0, 40);
 
     var lock = LockService.getScriptLock();
     lock.waitLock(30000);
@@ -184,7 +194,7 @@ function doPost(e) {
 
       appendSubmission_({
         hoTen: hoTen, phoneRaw: String(body.phoneRaw || body.phone || ""), phoneNorm: phoneNorm,
-        email: email, voucherCode: alloc.code, allocatedAt: alloc.allocatedAt,
+        email: email, channel: channel, voucherCode: alloc.code, allocatedAt: alloc.allocatedAt,
         source: String(body.source || ""), userAgent: String(body.userAgent || ""), ip: String(body.ip || ""),
       });
 
@@ -248,7 +258,7 @@ function appendSubmission_(o) {
   sh.appendRow([
     new Date(), o.hoTen, o.phoneRaw, o.phoneNorm, o.email,
     o.voucherCode, VOUCHER_VALUE, o.allocatedAt, "",
-    "pending", "", "", o.source, o.userAgent, o.ip,
+    "pending", "", "", o.source, o.userAgent, o.ip, o.channel,
   ]);
 }
 
