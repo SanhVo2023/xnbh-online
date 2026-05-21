@@ -1,0 +1,12 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Env vars to set in the Netlify UI (Site settings → Environment variables):
+#   GAS_WEBAPP_URL        = https://script.google.com/macros/s/XXXX/exec
+#   GAS_SHARED_SECRET     = (same value as SHARED_SECRET in GAS Script Properties)
+#   NEXT_PUBLIC_SHOP_URL  = https://matviet.vn
+#   NEXT_PUBLIC_SITE_URL  = https://baohanh.matviet.vn

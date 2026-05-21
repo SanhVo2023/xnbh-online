@@ -1,0 +1,170 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #f4f7ff;
+  --gold: #f5a800;
+  --royal: #2a4df0;
+  color-scheme: light;
+}
+
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-paper font-sans text-navy-700 antialiased;
+    color: #2a3556;
+    background-color: var(--bg);
+    overflow-x: hidden;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Selection in brand gold */
+  ::selection {
+    background: rgba(245, 168, 0, 0.9);
+    color: #0b1438;
+  }
+
+  /* Slimmer, on-brand scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #e7edfb;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #b9c6ea;
+    border-radius: 999px;
+    border: 2px solid #e7edfb;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #8fa3da;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display text-navy-800;
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer components {
+  /* Frosted glass surface — light */
+  .glass {
+    background: rgba(255, 255, 255, 0.62);
+    backdrop-filter: blur(18px) saturate(150%);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
+    border: 1px solid rgba(22, 35, 91, 0.08);
+    box-shadow: 0 14px 40px -22px rgba(22, 35, 91, 0.35);
+  }
+
+  /* Solid card surface — form / modal */
+  .glass-strong {
+    background: #ffffff;
+    border: 1px solid rgba(22, 35, 91, 0.08);
+    box-shadow: 0 30px 70px -30px rgba(22, 35, 91, 0.4);
+  }
+
+  /* Gold gradient text — deepened for contrast on white */
+  .text-gradient-gold {
+    background: linear-gradient(100deg, #f5a800 0%, #e08a00 60%, #c97800 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .text-gradient-cool {
+    background: linear-gradient(100deg, #2a4df0 0%, #1733b8 60%, #16235b 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Primary CTA — gold pill with depth + shine sweep */
+  .btn-gold {
+    @apply relative inline-flex items-center justify-center gap-2 rounded-full
+      px-7 py-4 font-bold text-navy-900 transition-transform duration-200
+      will-change-transform;
+    background: linear-gradient(180deg, #ffd95c 0%, #ffc400 55%, #f5a800 100%);
+    box-shadow:
+      0 12px 28px -8px rgba(245, 168, 0, 0.55),
+      inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  }
+  .btn-gold:active {
+    transform: scale(0.97);
+  }
+  .btn-gold::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: linear-gradient(
+      110deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.6) 50%,
+      transparent 70%
+    );
+    background-size: 200% 100%;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .btn-gold:hover::after {
+    opacity: 1;
+    animation: shimmer 1.4s linear infinite;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border
+      border-navy-700/20 bg-white/50 px-6 py-3.5 font-semibold text-navy-700
+      transition-colors duration-200 hover:border-navy-700/40 hover:bg-white;
+  }
+
+  /* Eyebrow label */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-royal-500/15
+      bg-royal-500/[0.06] px-3.5 py-1.5 text-xs font-semibold uppercase
+      tracking-[0.18em] text-royal-600;
+  }
+
+  /* Grain overlay — barely-there on light */
+  .grain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+@layer utilities {
+  .section-pad {
+    @apply px-5 py-20 sm:px-8 md:py-28;
+  }
+  .container-tight {
+    @apply mx-auto w-full max-w-md;
+  }
+  .container-wide {
+    @apply mx-auto w-full max-w-6xl;
+  }
+}
+
+/* Respect reduced motion: kill decorative animation globally */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
