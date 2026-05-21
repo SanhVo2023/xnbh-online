@@ -20,11 +20,11 @@ export default function Header() {
       className="fixed inset-x-0 top-0 z-40"
     >
       <div
-        className={`mx-auto flex max-w-6xl items-center justify-between px-4 transition-all duration-300 sm:px-6 ${
+        className={`relative mx-auto flex max-w-6xl items-center justify-center px-4 transition-all duration-300 sm:px-6 ${
           scrolled ? "py-2.5" : "py-4"
         }`}
       >
-        {/* Navy+gold logo reads directly on the light canvas — no plate needed */}
+        {/* Centered navy+gold logo — reads directly on the light canvas */}
         <a href="#top" className="flex items-center" aria-label="Mắt Việt">
           <Image
             src="/asset/logo.png"
@@ -40,7 +40,7 @@ export default function Header() {
 
         <a
           href="#form"
-          className="hidden rounded-full border border-gold-500/30 bg-gold-400/15 px-4 py-2 text-sm font-semibold text-gold-600 transition-colors hover:bg-gold-400/25 sm:inline-flex"
+          className="absolute right-4 hidden rounded-full border border-gold-500/30 bg-gold-400/15 px-4 py-2 text-sm font-semibold text-gold-600 transition-colors hover:bg-gold-400/25 sm:right-6 sm:inline-flex"
         >
           Nhận voucher 300K
         </a>

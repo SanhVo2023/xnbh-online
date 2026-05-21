@@ -58,10 +58,41 @@ function WebsiteIcon() {
   );
 }
 
+function ZaloIcon() {
+  return (
+    <svg viewBox="0 0 28 28" className="h-7 w-7 shrink-0" aria-hidden="true">
+      <rect width="28" height="28" rx="7" fill="#0068FF" />
+      <path
+        d="M8.7 8.6h10.6a1.6 1.6 0 0 1 1.6 1.6v4.4a1.6 1.6 0 0 1-1.6 1.6h-4.2L12 20.2v-3.4l-3.3-.6a1.6 1.6 0 0 1-1.6-1.6v-4.4a1.6 1.6 0 0 1 1.6-1.6Z"
+        fill="#fff"
+      />
+      <g fill="#0068FF">
+        <circle cx="11" cy="12.6" r="0.95" />
+        <circle cx="14" cy="12.6" r="0.95" />
+        <circle cx="17" cy="12.6" r="0.95" />
+      </g>
+    </svg>
+  );
+}
+
+function FacebookIcon() {
+  return (
+    <svg viewBox="0 0 28 28" className="h-7 w-7 shrink-0" aria-hidden="true">
+      <rect width="28" height="28" rx="7" fill="#1877F2" />
+      <g stroke="#fff" strokeWidth="2.4" fill="none" strokeLinecap="round">
+        <path d="M16.2 8.2c-.5-.2-1.1-.3-1.9-.3-1.7 0-2.5 1-2.5 2.7V20.6" />
+        <path d="M10 12.5h5.5" />
+      </g>
+    </svg>
+  );
+}
+
 export const CHANNELS = [
   { value: "Shopee", label: "Shopee", Icon: ShopeeIcon },
   { value: "Tiktok", label: "TikTok Shop", Icon: TiktokIcon },
   { value: "Lazada", label: "Lazada", Icon: LazadaIcon },
+  { value: "Zalo", label: "Zalo", Icon: ZaloIcon },
+  { value: "Facebook", label: "Facebook", Icon: FacebookIcon },
   { value: "Website", label: "Website Mắt Việt", Icon: WebsiteIcon },
 ] as const;
 
@@ -134,7 +165,7 @@ export default function ChannelSelect({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute z-20 mt-2 w-full overflow-hidden rounded-2xl border border-line bg-white p-1.5 shadow-card"
+            className="absolute z-20 mt-2 max-h-72 w-full overflow-y-auto rounded-2xl border border-line bg-white p-1.5 shadow-card"
           >
             {CHANNELS.map((c) => {
               const active = c.value === value;

@@ -16,13 +16,18 @@
 
   html {
     scroll-behavior: smooth;
+    /* Lock sideways scroll on mobile. `clip` clips overflow without becoming a
+       scroll container, so position: sticky keeps working. */
+    overflow-x: clip;
   }
 
   body {
     @apply bg-paper font-sans text-navy-700 antialiased;
     color: #2a3556;
     background-color: var(--bg);
-    overflow-x: hidden;
+    overflow-x: clip;
+    width: 100%;
+    max-width: 100%;
     text-rendering: optimizeLegibility;
   }
 

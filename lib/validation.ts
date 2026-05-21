@@ -22,7 +22,7 @@ export const submissionSchema = z.object({
     .max(120)
     .optional()
     .or(z.literal("")),
-  channel: z.enum(["Shopee", "Tiktok", "Lazada", "Website"], {
+  channel: z.enum(["Shopee", "Tiktok", "Lazada", "Zalo", "Facebook", "Website"], {
     errorMap: () => ({ message: "Vui lòng chọn kênh mua hàng" }),
   }),
   agree: z.literal(true, {
