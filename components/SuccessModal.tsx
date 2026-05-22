@@ -251,7 +251,9 @@ export default function SuccessModal({
                 </div>
                 <div className="rounded-xl bg-paper px-3 py-2.5">
                   <p className="text-muted">Hạn sử dụng</p>
-                  <p className="font-semibold text-navy-800">{data.expiryDays} ngày</p>
+                  <p className="font-semibold text-navy-800">
+                    {data.expiryDate ? `Đến ${data.expiryDate}` : `${data.expiryDays} ngày`}
+                  </p>
                 </div>
               </motion.div>
 
@@ -263,7 +265,7 @@ export default function SuccessModal({
                   <rect x="5" y="2" width="14" height="20" rx="3" stroke="currentColor" strokeWidth="1.8" />
                   <path d="M11 18h2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
                 </svg>
-                Mã cũng được gửi qua SMS trong vòng 24 giờ.
+                Mã đã được gửi qua SMS đến số điện thoại của bạn.
               </motion.p>
 
               {/* Collapsible voucher T&C */}

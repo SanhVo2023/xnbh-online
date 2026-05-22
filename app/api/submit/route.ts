@@ -92,6 +92,8 @@ export async function POST(req: NextRequest) {
     const withinCooldown = prev && Date.now() - prev.ts < DEDUP_WINDOW_MS;
     const code = withinCooldown ? prev!.code : mockVoucher();
     if (!withinCooldown) mockClaims.set(phoneNorm, { code, ts: Date.now() });
+    const exp = new Date(Date.now() + EXPIRY_DAYS * 86400000);
+    const expiryDate = `${String(exp.getDate()).padStart(2, "0")}/${String(exp.getMonth() + 1).padStart(2, "0")}/${exp.getFullYear()}`;
     await new Promise((r) => setTimeout(r, 600)); // simulate latency
     return json({
       ok: true,
@@ -99,6 +101,7 @@ export async function POST(req: NextRequest) {
       voucherCode: code,
       voucherValue: VOUCHER_VALUE,
       expiryDays: EXPIRY_DAYS,
+      expiryDate,
     });
   }
 

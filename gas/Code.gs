@@ -6,9 +6,10 @@
  *  FLOW
  *   - doPost()              receives a submission from the Next.js /api/submit
  *                           proxy, applies a 2-DAY dedup cooldown, allocates one
- *                           pre-generated voucher, logs the row.
- *   - sendPendingVouchers() hourly trigger: 24h after submission, sends the
- *                           voucher SMS via eSMS and sets HSD = send date + 30d.
+ *                           pre-generated voucher, sends the SMS immediately
+ *                           (HSD = today + 30 days), logs the row.
+ *   - sendPendingVouchers() hourly safety-net trigger: re-sends any rows still
+ *                           marked "pending" or "failed".
  *   - setup()               one-time: builds sheets + installs the trigger.
  *
  *  SETUP (once, in order):
@@ -35,7 +36,6 @@ var SHARED_SECRET = "SET_ME";  // must equal Netlify GAS_SHARED_SECRET (kept out
 var VOUCHER_VALUE = 300000;       // 300.000đ
 var MIN_ORDER = 1500000;          // đơn tối thiểu 1.500.000đ
 var EXPIRY_DAYS = 30;             // HSD = send date + 30 days
-var SMS_DELAY_HOURS = 24;         // send SMS 24h after submit
 var DEDUP_WINDOW_HOURS = 48;      // 2-day cooldown: same code within 48h, new after
 var TIMEZONE = "GMT+7";
 
@@ -75,11 +75,10 @@ function setup() {
   if (!cfg) {
     cfg = ss.insertSheet(SHEETS.config);
     cfg.getRange(1, 1, 1, 2).setValues([["setting", "value"]]).setFontWeight("bold");
-    cfg.getRange(2, 1, 7, 2).setValues([
+    cfg.getRange(2, 1, 6, 2).setValues([
       ["voucherValue", VOUCHER_VALUE],
       ["minOrder", MIN_ORDER],
       ["expiryDays", EXPIRY_DAYS],
-      ["smsDelayHours", SMS_DELAY_HOURS],
       ["dedupWindowHours", DEDUP_WINDOW_HOURS],
       ["brandname", BRANDNAME],
       ["smsTemplate", SMS_TEMPLATE],
@@ -182,6 +181,7 @@ function doPost(e) {
           voucherCode: recent.voucherCode,
           voucherValue: recent.voucherValue || VOUCHER_VALUE,
           expiryDays: EXPIRY_DAYS,
+          expiryDate: recent.expiryAt ? String(recent.expiryAt) : "",
         });
       }
 
@@ -192,15 +192,26 @@ function doPost(e) {
         return jsonOut_({ ok: false, error: "Chương trình tạm hết voucher. Vui lòng liên hệ cửa hàng." });
       }
 
+      // 3) Send the voucher SMS RIGHT AWAY (no delay). HSD = today + 30 days.
+      var now = new Date();
+      var expStr = Utilities.formatDate(
+        new Date(now.getTime() + EXPIRY_DAYS * 86400000), TIMEZONE, "dd/MM/yyyy");
+      var content = SMS_TEMPLATE
+        .replace(/{{\s*code\s*}}/g, alloc.code)
+        .replace(/{{\s*exp\s*}}/g, expStr)
+        .replace(/{{\s*name\s*}}/g, hoTen);
+      var sms = sendEsmsSms_(phoneNorm, content);
+
       appendSubmission_({
         hoTen: hoTen, phoneRaw: String(body.phoneRaw || body.phone || ""), phoneNorm: phoneNorm,
         email: email, channel: channel, voucherCode: alloc.code, allocatedAt: alloc.allocatedAt,
+        expiryAt: expStr, smsStatus: sms.ok ? "sent" : "failed", smsSentAt: now, smsResult: sms.raw,
         source: String(body.source || ""), userAgent: String(body.userAgent || ""), ip: String(body.ip || ""),
       });
 
       return jsonOut_({
         ok: true, deduped: false,
-        voucherCode: alloc.code, voucherValue: VOUCHER_VALUE, expiryDays: EXPIRY_DAYS,
+        voucherCode: alloc.code, voucherValue: VOUCHER_VALUE, expiryDays: EXPIRY_DAYS, expiryDate: expStr,
       });
     } finally {
       lock.releaseLock();
@@ -227,6 +238,7 @@ function findRecentClaim_(phoneNorm) {
       return {
         voucherCode: data[i][idx.voucherCode],
         voucherValue: data[i][idx.voucherValue],
+        expiryAt: data[i][idx.expiryAt],
         timestamp: new Date(data[i][idx.timestamp]).getTime(),
       };
     }
@@ -254,16 +266,17 @@ function allocateVoucher_(phoneNorm) {
 
 function appendSubmission_(o) {
   var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEETS.submissions);
-  // expiryAt left blank — set at SMS send time (HSD = send date + 30d).
   sh.appendRow([
     new Date(), o.hoTen, o.phoneRaw, o.phoneNorm, o.email,
-    o.voucherCode, VOUCHER_VALUE, o.allocatedAt, "",
-    "pending", "", "", o.source, o.userAgent, o.ip, o.channel,
+    o.voucherCode, VOUCHER_VALUE, o.allocatedAt, o.expiryAt || "",
+    o.smsStatus || "pending", o.smsSentAt || "", o.smsResult || "",
+    o.source, o.userAgent, o.ip, o.channel,
   ]);
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-//  SMS — hourly trigger; sends 24h after submission, HSD = send date + 30d
+//  SMS — vouchers are sent immediately in doPost(). This hourly trigger is just a
+//  safety net that (re)sends any rows still marked "pending" or "failed".
 // ════════════════════════════════════════════════════════════════════════════
 function sendPendingVouchers() {
   var lock = LockService.getScriptLock();
@@ -275,18 +288,17 @@ function sendPendingVouchers() {
     var n = sh.getLastRow() - 1;
     var data = sh.getRange(2, 1, n, SUBMISSION_HEADERS.length).getValues();
     var idx = colIdx_(SUBMISSION_HEADERS);
-    var now = Date.now();
 
     for (var i = 0; i < data.length; i++) {
       var row = data[i];
-      if (String(row[idx.smsStatus]) !== "pending") continue;
-      var ts = new Date(row[idx.timestamp]).getTime();
-      if (now - ts < SMS_DELAY_HOURS * 3600000) continue; // not yet 24h
+      var status = String(row[idx.smsStatus]);
+      if (status !== "pending" && status !== "failed") continue;
 
-      // HSD computed at SEND time = today + 30 days.
+      // Reuse the stored HSD if present, else HSD = today + 30 days.
       var sendDate = new Date();
-      var exp = new Date(sendDate.getTime() + EXPIRY_DAYS * 86400000);
-      var expStr = Utilities.formatDate(exp, TIMEZONE, "dd/MM/yyyy");
+      var expStr = row[idx.expiryAt]
+        ? String(row[idx.expiryAt])
+        : Utilities.formatDate(new Date(sendDate.getTime() + EXPIRY_DAYS * 86400000), TIMEZONE, "dd/MM/yyyy");
 
       var phone = String(row[idx.phoneNorm] || row[idx.phoneRaw]);
       var content = SMS_TEMPLATE

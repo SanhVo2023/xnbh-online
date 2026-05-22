@@ -2,7 +2,7 @@
 
 Google Apps Script web app + Google Sheet that powers warranty confirmation:
 allocates pre-generated **300.000đ** vouchers, applies a **2-day dedup cooldown**,
-and sends the voucher SMS via **eSMS** 24h after submission.
+and sends the voucher SMS via **eSMS** immediately on submission.
 
 > This is an **internal tool**, so the eSMS keys live directly in `Code.gs`
 > constants (not Script Properties). Don't publish this file publicly with real keys.
@@ -21,7 +21,7 @@ var BRANDNAME       = "MATVIET";   // registered Brandname
 var SHARED_SECRET   = "....";      // long random; also set in Netlify GAS_SHARED_SECRET
 ```
 Other tunables already set: `VOUCHER_VALUE=300000`, `MIN_ORDER=1500000`,
-`EXPIRY_DAYS=30`, `SMS_DELAY_HOURS=24`, `DEDUP_WINDOW_HOURS=48`, and the
+`EXPIRY_DAYS=30`, `DEDUP_WINDOW_HOURS=48`, and the
 `SMS_TEMPLATE` (with `{{code}}` / `{{exp}}` placeholders).
 
 ## 3. Build the sheets + trigger
@@ -57,16 +57,17 @@ therefore receive multiple vouchers over time, ≥ 2 days apart. Allocation is w
 in a `LockService` lock so concurrent submits can't double-spend.
 
 ### Expiry (HSD)
-Computed when the **SMS is sent** = **send date + 30 days**, formatted `dd/MM/yyyy`
-(GMT+7), and written to `Submissions.expiryAt`. The on-screen popup shows the
-relative "30 ngày".
+**HSD = submission day + 30 days**, formatted `dd/MM/yyyy` (GMT+7), written to
+`Submissions.expiryAt` and **returned to the frontend** (shown in the popup as
+"Đến dd/MM/yyyy") as well as embedded in the SMS.
 
 ### SMS (eSMS)
-24h after submission the hourly trigger sends via
+Sent **immediately** inside `doPost` (no delay) via
 `SendMultipleMessage_V4_post_json` with the exact payload
 (`Brandname:"MATVIET"`, `SmsType:"2"`, `IsUnicode:0`, `SandBox:0`). Success =
 `CodeResult === "100"`; otherwise `ErrorMessage` is logged and the row is marked
-`failed`.
+`failed`. The hourly `sendPendingVouchers` trigger is a safety net that re-sends
+any `pending`/`failed` rows.
 
 Template:
 ```
@@ -79,8 +80,8 @@ Quy Khach than men! Mat Viet gui QK ma {{code}} -300k cho Don Hang tiep theo tu 
 - `test_seedDemo()` — seed 4 demo codes.
 - `test_doPost()` — two quick calls; the 2nd is `deduped:true` with the **same**
   code (within the 48h window).
-- Set `SMS_DELAY_HOURS = 0`, run `test_sendNow()` → a real SMS arrives with
-  `HSD = today + 30 days` and `CodeResult:100` in `Logs`. Restore to `24`.
+- `test_doPost()` already sends a real SMS immediately (HSD = today + 30 days,
+  `CodeResult:100` in `Logs`). `test_sendNow()` runs the safety-net retry pass.
 
 ## Notes
 - **Dedup key** = `normalizeVNPhone` (mirrored in `lib/phone.ts`).
