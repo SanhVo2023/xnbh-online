@@ -30,7 +30,7 @@
 // ── Secrets & config (internal tool — edit these) ─────────────────────────────
 var ESMS_API_KEY = "YOUR_ESMS_API_KEY";        // ← paste real eSMS ApiKey
 var ESMS_SECRET_KEY = "YOUR_ESMS_SECRET_KEY";  // ← paste real eSMS SecretKey
-var BRANDNAME = "MATVIET";                      // registered eSMS Brandname
+var BRANDNAME = "MATVIET.VN";                   // registered eSMS Brandname
 var SHARED_SECRET = "SET_ME";  // must equal Netlify GAS_SHARED_SECRET (kept out of git; real value is in .env.netlify / the live deployment)
 
 var VOUCHER_VALUE = 300000;       // 300.000đ
@@ -66,7 +66,7 @@ var SEED_CODES = "";
 // ════════════════════════════════════════════════════════════════════════════
 function setup() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  ensureSheet_(ss, SHEETS.submissions, SUBMISSION_HEADERS);
+  var sub = ensureSheet_(ss, SHEETS.submissions, SUBMISSION_HEADERS);
   var vou = ensureSheet_(ss, SHEETS.vouchers, VOUCHER_HEADERS);
   ensureSheet_(ss, SHEETS.logs, ["timestamp", "level", "message"]);
 
