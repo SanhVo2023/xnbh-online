@@ -95,12 +95,12 @@ export default function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* scroll cue */}
+      {/* scroll cue — desktop only (on mobile it overlaps the stacked visual) */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.4 }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2"
+        className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 md:block"
       >
         <div className="flex h-9 w-5 items-start justify-center rounded-full border border-navy-700/25 p-1">
           <motion.span

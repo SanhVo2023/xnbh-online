@@ -79,7 +79,7 @@ export default function WarrantyForm() {
         <Reveal>
           <div className="mb-7 text-center">
             <span className="eyebrow">Kích hoạt ngay</span>
-            <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">
+            <h2 className="mt-4 whitespace-nowrap text-2xl font-extrabold sm:text-4xl">
               Nhận voucher{" "}
               <span className="text-gradient-gold">300.000đ</span>
             </h2>

@@ -49,8 +49,8 @@ export default function TrustBadges() {
       <div className="container-wide grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
         {BADGES.map((b, i) => (
           <Reveal key={b.title} i={i}>
-            <div className="group glass relative h-full overflow-hidden rounded-2xl p-5 text-left">
-              <div className="flex items-center gap-3">
+            <div className="group glass relative h-full overflow-hidden rounded-2xl p-5 text-center">
+              <div className="flex items-center justify-center gap-3">
                 <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gold-400/20 text-gold-600 ring-1 ring-gold-500/20">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                     {b.icon}

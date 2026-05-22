@@ -39,17 +39,17 @@ export default function WarrantyTerms() {
     <section id="terms" className="section-pad relative">
       <div className="container-wide grid gap-10 md:grid-cols-[0.85fr_1.15fr] md:items-start">
         <Reveal>
-          <div className="md:sticky md:top-28">
+          <div className="text-center md:sticky md:top-28 md:text-left">
             <span className="eyebrow">Quyền lợi của bạn</span>
             <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">
               Điều kiện{" "}
               <span className="text-gradient-gold">bảo hành</span>
             </h2>
-            <p className="mt-3 max-w-sm text-muted">
+            <p className="mx-auto mt-3 max-w-sm text-muted md:mx-0">
               Chính sách bảo hành minh bạch, áp dụng toàn hệ thống Mắt Việt trên
               cả nước.
             </p>
-            <div className="mt-6 flex justify-center">
+            <div className="mt-6 flex justify-center md:justify-start">
               <div className="inline-flex items-center gap-3 rounded-2xl glass px-4 py-3 text-center">
                 <span className="text-2xl">📍</span>
                 <p className="text-sm text-muted">
