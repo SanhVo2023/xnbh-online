@@ -68,12 +68,14 @@ export default function AbstractBackground() {
     };
 
     const resize = () => {
-      width = window.innerWidth;
+      const w = window.innerWidth;
+      // Ignore height-only changes (mobile address bar showing/hiding on scroll).
+      // Rebuilding here would re-randomize the orbs and make them flicker/teleport.
+      if (w === width) return;
+      width = w;
       height = window.innerHeight;
       canvas.width = Math.floor(width * dpr);
       canvas.height = Math.floor(height * dpr);
-      canvas.style.width = width + "px";
-      canvas.style.height = height + "px";
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       buildOrbs();
     };
@@ -129,7 +131,11 @@ export default function AbstractBackground() {
             "radial-gradient(120% 90% at 50% -10%, #ffffff 0%, #eef3ff 45%, #e6edff 100%)",
         }}
       />
-      <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 h-full w-full"
+        style={{ transform: "translateZ(0)" }}
+      />
       {/* Faint dotted grid, fading from the top */}
       <div
         className="absolute inset-0 opacity-60"

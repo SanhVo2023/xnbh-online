@@ -100,7 +100,7 @@ export default function WarrantyTerms() {
                         transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
                         className="overflow-hidden"
                       >
-                        <p className="px-5 pb-5 pl-[92px] text-sm leading-relaxed text-muted">
+                        <p className="px-5 pb-5 text-sm leading-relaxed text-muted">
                           {t.body}
                         </p>
                       </motion.div>
