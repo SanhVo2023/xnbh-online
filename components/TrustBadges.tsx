@@ -45,28 +45,33 @@ const BADGES = [
 
 export default function TrustBadges() {
   return (
-    <section className="relative px-5 py-8 sm:px-8">
-      <div className="container-wide grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
+    <section className="relative px-5 py-10 sm:px-8">
+      <div className="container-wide grid grid-cols-1 gap-7 sm:grid-cols-3 sm:gap-6">
         {BADGES.map((b, i) => (
           <Reveal key={b.title} i={i}>
-            <div className="group glass relative h-full overflow-hidden rounded-2xl p-5 text-center">
-              <div className="flex items-center justify-center gap-3">
-                <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gold-400/20 text-gold-600 ring-1 ring-gold-500/20">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            {/* Boxless, sleek; thin divider between items on mobile only */}
+            <div
+              className={`text-center ${
+                i > 0 ? "border-t border-line pt-7 sm:border-0 sm:pt-0" : ""
+              }`}
+            >
+              <div className="flex items-baseline justify-center gap-1.5">
+                <span className="font-display text-[2.75rem] font-extrabold leading-none text-gradient-cool">
+                  {b.value}
+                </span>
+                <span className="text-lg font-bold text-gold-500">{b.unit}</span>
+              </div>
+              <h3 className="mt-2.5 text-base font-bold leading-snug text-navy-800">
+                {b.title}
+                <span className="ml-1.5 inline-block align-middle text-gold-500">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
                     {b.icon}
                   </svg>
                 </span>
-                <div className="flex items-baseline gap-1">
-                  <span className="font-display text-3xl font-extrabold leading-none text-gradient-cool">
-                    {b.value}
-                  </span>
-                  <span className="text-base font-bold text-gold-600">{b.unit}</span>
-                </div>
-              </div>
-              <h3 className="mt-3 text-base font-bold text-navy-800">{b.title}</h3>
-              <p className="mt-1 text-sm leading-relaxed text-muted">{b.desc}</p>
-              {/* hover sheen */}
-              <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-royal-400/25 blur-2xl transition-opacity duration-500 group-hover:opacity-100 sm:opacity-0" />
+              </h3>
+              <p className="mx-auto mt-1.5 max-w-[15rem] text-sm leading-relaxed text-muted">
+                {b.desc}
+              </p>
             </div>
           </Reveal>
         ))}

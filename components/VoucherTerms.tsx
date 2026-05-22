@@ -54,15 +54,15 @@ export default function VoucherTerms() {
           {GROUPS.map((g, i) => (
             <Reveal key={g.data.title} i={i}>
               <div className="glass h-full rounded-2xl p-5">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="text-base font-bold text-navy-800">
+                    {g.data.title}
+                  </h3>
                   <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ring-1 ${g.chip}`}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                       {g.icon}
                     </svg>
                   </span>
-                  <h3 className="text-base font-bold text-navy-800">
-                    {g.data.title}
-                  </h3>
                 </div>
                 <ul className="mt-3 space-y-2">
                   {g.data.items.map((it) => (

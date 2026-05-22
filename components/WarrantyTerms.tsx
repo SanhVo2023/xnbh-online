@@ -70,14 +70,14 @@ export default function WarrantyTerms() {
                 <li key={t.title} className="glass overflow-hidden rounded-2xl">
                   <button
                     onClick={() => setOpen(isOpen ? null : idx)}
-                    className="flex w-full items-center gap-4 px-5 py-4 text-left transition-colors hover:bg-royal-500/[0.04]"
+                    className="flex w-full items-center gap-3 px-5 py-4 text-left transition-colors hover:bg-royal-500/[0.04]"
                     aria-expanded={isOpen}
                   >
-                    <span className="flex min-w-[68px] justify-center rounded-full bg-gold-400/20 px-3 py-1 text-sm font-bold text-gold-600 ring-1 ring-gold-500/20">
-                      {t.tag}
-                    </span>
                     <span className="flex-1 font-semibold text-navy-800">
                       {t.title}
+                    </span>
+                    <span className="flex shrink-0 justify-center rounded-full bg-gold-400/20 px-3 py-1 text-sm font-bold text-gold-600 ring-1 ring-gold-500/20">
+                      {t.tag}
                     </span>
                     <motion.svg
                       animate={{ rotate: isOpen ? 180 : 0 }}
