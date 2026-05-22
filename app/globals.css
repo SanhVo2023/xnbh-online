@@ -62,11 +62,10 @@
 }
 
 @layer components {
-  /* Frosted glass surface — light */
+  /* Light card surface. NB: no backdrop-filter — blurring over the animated
+     background caused a flickering hairline ("white line") during scroll. */
   .glass {
-    background: rgba(255, 255, 255, 0.62);
-    backdrop-filter: blur(18px) saturate(150%);
-    -webkit-backdrop-filter: blur(18px) saturate(150%);
+    background: rgba(255, 255, 255, 0.8);
     border: 1px solid rgba(22, 35, 91, 0.08);
     box-shadow: 0 14px 40px -22px rgba(22, 35, 91, 0.35);
   }

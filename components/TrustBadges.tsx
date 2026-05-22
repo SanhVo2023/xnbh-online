@@ -45,31 +45,21 @@ const BADGES = [
 
 export default function TrustBadges() {
   return (
-    <section className="relative px-5 py-10 sm:px-8">
-      <div className="container-wide grid grid-cols-1 gap-7 sm:grid-cols-3 sm:gap-6">
+    <section className="relative px-5 py-8 sm:px-8">
+      <div className="container-wide grid grid-cols-1 gap-5 sm:grid-cols-3 sm:gap-6">
         {BADGES.map((b, i) => (
           <Reveal key={b.title} i={i}>
-            {/* Boxless, sleek; thin divider between items on mobile only */}
-            <div
-              className={`text-center ${
-                i > 0 ? "border-t border-line pt-7 sm:border-0 sm:pt-0" : ""
-              }`}
-            >
+            <div className="text-center">
               <div className="flex items-baseline justify-center gap-1.5">
                 <span className="font-display text-[2.75rem] font-extrabold leading-none text-gradient-cool">
                   {b.value}
                 </span>
                 <span className="text-lg font-bold text-gold-500">{b.unit}</span>
               </div>
-              <h3 className="mt-2.5 text-base font-bold leading-snug text-navy-800">
+              <h3 className="mt-2 text-base font-bold leading-snug text-navy-800">
                 {b.title}
-                <span className="ml-1.5 inline-block align-middle text-gold-500">
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-                    {b.icon}
-                  </svg>
-                </span>
               </h3>
-              <p className="mx-auto mt-1.5 max-w-[15rem] text-sm leading-relaxed text-muted">
+              <p className="mx-auto mt-1 max-w-[15rem] text-sm leading-relaxed text-muted">
                 {b.desc}
               </p>
             </div>

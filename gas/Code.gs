@@ -39,9 +39,10 @@ var EXPIRY_DAYS = 30;             // HSD = send date + 30 days
 var DEDUP_WINDOW_HOURS = 48;      // 2-day cooldown: same code within 48h, new after
 var TIMEZONE = "GMT+7";
 
-// eSMS Brandname template (non-accented, IsUnicode=0). {{code}} and {{exp}} replaced.
+// eSMS Brandname template (non-accented, IsUnicode=0).
+// Placeholders: {{code}} or ${voucherCode} → voucher code; {{exp}} or ${expDate} → HSD.
 var SMS_TEMPLATE =
-  "Quy Khach than men! Mat Viet gui QK ma {{code}} -300k cho Don Hang tiep theo tu 1tr5. HSD: {{exp}}. Kinh chuc Quy Khach that nhieu suc khoe.";
+  "Mat Viet cam on Quy khach da xac nhan bao hanh. Tang ma giam 300K (DH tu 1tr5) cho lan mua sau. Ma: {{code}}. HSD: {{exp}}.";
 
 var ESMS_ENDPOINT =
   "http://rest.esms.vn/MainService.svc/json/SendMultipleMessage_V4_post_json/";
@@ -200,10 +201,7 @@ function doPost(e) {
       var now = new Date();
       var expStr = Utilities.formatDate(
         new Date(now.getTime() + EXPIRY_DAYS * 86400000), TIMEZONE, "dd/MM/yyyy");
-      var content = SMS_TEMPLATE
-        .replace(/{{\s*code\s*}}/g, alloc.code)
-        .replace(/{{\s*exp\s*}}/g, expStr)
-        .replace(/{{\s*name\s*}}/g, hoTen);
+      var content = fillTemplate_(SMS_TEMPLATE, alloc.code, expStr, hoTen);
       var sms = sendEsmsSms_(phoneNorm, content);
 
       appendSubmission_({
@@ -307,10 +305,7 @@ function sendPendingVouchers() {
         : Utilities.formatDate(new Date(sendDate.getTime() + EXPIRY_DAYS * 86400000), TIMEZONE, "dd/MM/yyyy");
 
       var phone = String(row[idx.phoneNorm] || row[idx.phoneRaw]);
-      var content = SMS_TEMPLATE
-        .replace(/{{\s*code\s*}}/g, String(row[idx.voucherCode]))
-        .replace(/{{\s*exp\s*}}/g, expStr)
-        .replace(/{{\s*name\s*}}/g, String(row[idx.hoTen]));
+      var content = fillTemplate_(SMS_TEMPLATE, String(row[idx.voucherCode]), expStr, String(row[idx.hoTen]));
 
       var result = sendEsmsSms_(phone, content);
       var rowNum = i + 2;
@@ -360,6 +355,14 @@ function sendEsmsSms_(phone, content) {
 // ════════════════════════════════════════════════════════════════════════════
 //  UTILITIES
 // ════════════════════════════════════════════════════════════════════════════
+
+/** Fill an SMS template, accepting both {{code}} and ${voucherCode} style placeholders. */
+function fillTemplate_(tpl, code, exp, name) {
+  return String(tpl)
+    .replace(/\{\{\s*code\s*\}\}/g, code).replace(/\$\{voucherCode\}/g, code)
+    .replace(/\{\{\s*exp\s*\}\}/g, exp).replace(/\$\{expDate\}/g, exp)
+    .replace(/\{\{\s*name\s*\}\}/g, name).replace(/\$\{name\}/g, name);
+}
 
 /** Keep in sync with lib/phone.ts */
 function normalizeVNPhone(raw) {
