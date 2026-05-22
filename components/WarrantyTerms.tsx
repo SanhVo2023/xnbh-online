@@ -49,13 +49,15 @@ export default function WarrantyTerms() {
               Chính sách bảo hành minh bạch, áp dụng toàn hệ thống Mắt Việt trên
               cả nước.
             </p>
-            <div className="mt-6 inline-flex items-center gap-3 rounded-2xl glass px-4 py-3">
-              <span className="text-2xl">📍</span>
-              <p className="text-sm text-muted">
-                Áp dụng tại{" "}
-                <span className="font-semibold text-navy-800">tất cả cửa hàng</span>{" "}
-                Mắt Việt
-              </p>
+            <div className="mt-6 flex justify-center">
+              <div className="inline-flex items-center gap-3 rounded-2xl glass px-4 py-3 text-center">
+                <span className="text-2xl">📍</span>
+                <p className="text-sm text-muted">
+                  Áp dụng tại{" "}
+                  <span className="font-semibold text-navy-800">tất cả cửa hàng</span>{" "}
+                  Mắt Việt
+                </p>
+              </div>
             </div>
           </div>
         </Reveal>
@@ -77,13 +79,17 @@ export default function WarrantyTerms() {
                     <span className="flex-1 font-semibold text-navy-800">
                       {t.title}
                     </span>
-                    <motion.span
-                      animate={{ rotate: isOpen ? 45 : 0 }}
+                    <motion.svg
+                      animate={{ rotate: isOpen ? 180 : 0 }}
                       transition={{ duration: 0.25 }}
-                      className="text-xl leading-none text-navy-700/50"
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      className="shrink-0 text-navy-700/50"
                     >
-                      +
-                    </motion.span>
+                      <path d="m6 9 6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </motion.svg>
                   </button>
                   <AnimatePresence initial={false}>
                     {isOpen && (

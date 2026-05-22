@@ -16,13 +16,13 @@ export default function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-[100svh] flex-col items-center justify-center px-5 pb-16 pt-28 sm:px-8"
+      className="relative flex min-h-[88svh] flex-col items-center justify-center px-5 pb-10 pt-24 sm:px-8"
     >
       <motion.div
         variants={container}
         initial="hidden"
         animate="show"
-        className="container-wide grid items-center gap-10 md:grid-cols-2 md:gap-6"
+        className="container-wide grid items-center gap-6 md:grid-cols-2"
       >
         {/* Copy */}
         <div className="text-center md:text-left">
@@ -32,7 +32,7 @@ export default function Hero() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-gold-400 opacity-75" />
                 <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-gold-400" />
               </span>
-              Bảo hành chính hãng · Since 1989
+              Hành trình 35+ năm · Since 1989
             </span>
           </motion.div>
 

@@ -33,8 +33,8 @@ export default function Footer() {
           <a href="https://matviet.vn" className="transition-colors hover:text-royal-600">
             matviet.vn
           </a>
-          <a href="tel:18001056" className="transition-colors hover:text-royal-600">
-            Hotline: 1800 1056
+          <a href="tel:19006081" className="transition-colors hover:text-royal-600">
+            Hotline: 1900 6081
           </a>
           <a
             href="https://matviet.vn/pages/he-thong-cua-hang"

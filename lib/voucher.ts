@@ -13,7 +13,7 @@ export const VOUCHER_TERMS = {
     items: [
       "Đơn hàng có giá trị tối thiểu 1.500.000đ",
       "Hàng nguyên giá",
-      "Gọng + Mắt Tròng",
+      "Gọng Kính - Kính Mát - Tròng Kính",
       "Áp dụng trên một hóa đơn",
     ],
   },

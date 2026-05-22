@@ -73,36 +73,75 @@ export default function HeroVisual() {
         <span className="absolute left-1/2 top-3 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-royal-500" />
       </div>
 
-      {/* Floating glass voucher card */}
-      <motion.div
-        initial={{ opacity: 0, y: 20, rotate: -6 }}
-        animate={{ opacity: 1, y: 0, rotate: -6 }}
-        transition={{ delay: 0.8, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute -bottom-2 -right-1 sm:bottom-2 sm:-right-4"
-      >
-        <div className="animate-floaty rounded-2xl border border-line bg-white/90 px-4 py-3 shadow-card backdrop-blur">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-gold-600">
-            Voucher
-          </p>
-          <p className="font-display text-2xl font-extrabold leading-none text-navy-800">
-            300.000<span className="text-gold-500">đ</span>
-          </p>
-        </div>
-      </motion.div>
-
-      {/* Floating "chính hãng" badge */}
-      <motion.div
-        initial={{ opacity: 0, y: -16, rotate: 5 }}
-        animate={{ opacity: 1, y: 0, rotate: 5 }}
-        transition={{ delay: 1, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute -left-2 top-6 sm:-left-5"
-      >
-        <div className="animate-floaty rounded-full border border-line bg-white/90 px-3.5 py-2 shadow-soft backdrop-blur [animation-delay:1.5s]">
-          <p className="flex items-center gap-1.5 text-xs font-semibold text-navy-700">
-            <span className="text-base">🛡️</span> Chính hãng 100%
-          </p>
-        </div>
-      </motion.div>
+      {/* Floating trust badges around the bloom */}
+      {BADGES.map((b, i) => (
+        <motion.div
+          key={b.label}
+          initial={{ opacity: 0, scale: 0.8, y: 10 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ delay: 0.7 + i * 0.15, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className={`absolute ${b.pos}`}
+        >
+          <div
+            className="animate-floaty flex items-center gap-2 rounded-full border border-line bg-white px-3 py-2 shadow-card"
+            style={{ animationDelay: `${i * 0.6}s` }}
+          >
+            <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${b.tint}`}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                {b.icon}
+              </svg>
+            </span>
+            <span className="whitespace-nowrap text-xs font-bold text-navy-800">{b.label}</span>
+          </div>
+        </motion.div>
+      ))}
     </motion.div>
   );
 }
+
+const BADGES = [
+  {
+    label: "Voucher 300K",
+    tint: "bg-gold-500 text-white",
+    pos: "-top-1 left-2 -rotate-3 sm:left-6",
+    icon: (
+      <>
+        <path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2 2 2 0 0 0 0 4 2 2 0 0 1-2 2H5a2 2 0 0 1-2-2 2 2 0 0 0 0-4Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+        <path d="M12 7v10" stroke="currentColor" strokeWidth="2" strokeDasharray="2 3" strokeLinecap="round" />
+      </>
+    ),
+  },
+  {
+    label: "Bồi hoàn 1000%",
+    tint: "bg-royal-500 text-white",
+    pos: "top-12 -right-1 rotate-3 sm:-right-3",
+    icon: (
+      <>
+        <path d="M12 3 5 6v5c0 4.4 3 8.5 7 9.7 4-1.2 7-5.3 7-9.7V6l-7-3Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+        <path d="m9 12 2 2 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      </>
+    ),
+  },
+  {
+    label: "Giao hàng toàn quốc",
+    tint: "bg-emerald-500 text-white",
+    pos: "bottom-14 -left-1 rotate-2 sm:-left-3",
+    icon: (
+      <>
+        <path d="M2.5 7h10v8h-10zM12.5 10H17l3.5 3.5V15h-8z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+        <circle cx="6" cy="17.5" r="1.8" stroke="currentColor" strokeWidth="1.8" />
+        <circle cx="16.5" cy="17.5" r="1.8" stroke="currentColor" strokeWidth="1.8" />
+      </>
+    ),
+  },
+  {
+    label: "Miễn phí vận chuyển",
+    tint: "bg-navy-600 text-white",
+    pos: "-bottom-1 right-1 -rotate-2 sm:right-4",
+    icon: (
+      <>
+        <path d="M21 8 12 3 3 8l9 5 9-5ZM3 8v8l9 5 9-5V8" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+      </>
+    ),
+  },
+];

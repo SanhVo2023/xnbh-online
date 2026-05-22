@@ -152,7 +152,7 @@
 
 @layer utilities {
   .section-pad {
-    @apply px-5 py-20 sm:px-8 md:py-28;
+    @apply px-5 py-12 sm:px-8 md:py-16;
   }
   .container-tight {
     @apply mx-auto w-full max-w-md;

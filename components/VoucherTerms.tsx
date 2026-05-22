@@ -50,12 +50,12 @@ export default function VoucherTerms() {
           </div>
         </Reveal>
 
-        <div className="mt-10 grid gap-4 md:grid-cols-3">
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
           {GROUPS.map((g, i) => (
             <Reveal key={g.data.title} i={i}>
-              <div className="glass h-full rounded-3xl p-6">
+              <div className="glass h-full rounded-2xl p-5">
                 <div className="flex items-center gap-3">
-                  <span className={`flex h-10 w-10 items-center justify-center rounded-xl ring-1 ${g.chip}`}>
+                  <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ring-1 ${g.chip}`}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                       {g.icon}
                     </svg>
@@ -64,7 +64,7 @@ export default function VoucherTerms() {
                     {g.data.title}
                   </h3>
                 </div>
-                <ul className="mt-4 space-y-2.5">
+                <ul className="mt-3 space-y-2">
                   {g.data.items.map((it) => (
                     <li key={it} className="flex gap-2.5 text-sm leading-relaxed text-muted">
                       <span className={`mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full ${g.accent}`} style={{ backgroundColor: "currentColor" }} />
