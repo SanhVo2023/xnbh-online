@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 /* ── Brand icon tiles (hand-built SVG, recognizable, no external assets) ────── */
@@ -34,14 +35,13 @@ function TiktokIcon() {
 
 function LazadaIcon() {
   return (
-    <svg viewBox="0 0 28 28" className="h-7 w-7 shrink-0" aria-hidden="true">
-      <rect width="28" height="28" rx="7" fill="#16179E" />
-      <path
-        d="M14 20s-5-3.1-5-6.7A2.9 2.9 0 0 1 14 10.4a2.9 2.9 0 0 1 5 2.9C19 16.9 14 20 14 20Z"
-        fill="#fff"
-      />
-      <circle cx="14" cy="13.4" r="1.2" fill="#16179E" />
-    </svg>
+    <Image
+      src="/asset/channels/lazada.png"
+      alt="Lazada"
+      width={28}
+      height={28}
+      className="h-7 w-7 shrink-0 rounded-lg object-contain"
+    />
   );
 }
 
@@ -60,18 +60,13 @@ function WebsiteIcon() {
 
 function ZaloIcon() {
   return (
-    <svg viewBox="0 0 28 28" className="h-7 w-7 shrink-0" aria-hidden="true">
-      <rect width="28" height="28" rx="7" fill="#0068FF" />
-      <path
-        d="M8.7 8.6h10.6a1.6 1.6 0 0 1 1.6 1.6v4.4a1.6 1.6 0 0 1-1.6 1.6h-4.2L12 20.2v-3.4l-3.3-.6a1.6 1.6 0 0 1-1.6-1.6v-4.4a1.6 1.6 0 0 1 1.6-1.6Z"
-        fill="#fff"
-      />
-      <g fill="#0068FF">
-        <circle cx="11" cy="12.6" r="0.95" />
-        <circle cx="14" cy="12.6" r="0.95" />
-        <circle cx="17" cy="12.6" r="0.95" />
-      </g>
-    </svg>
+    <Image
+      src="/asset/channels/zalo.png"
+      alt="Zalo"
+      width={28}
+      height={28}
+      className="h-7 w-7 shrink-0 rounded-lg object-contain"
+    />
   );
 }
 

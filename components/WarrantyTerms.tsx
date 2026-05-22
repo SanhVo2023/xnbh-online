@@ -7,8 +7,8 @@ import Reveal from "./Reveal";
 const TERMS = [
   {
     tag: "07 ngày",
-    title: "Đổi mới 1 đổi 1",
-    body: "Trong vòng 07 ngày kể từ ngày mua, Quý khách được đổi sản phẩm mới hoàn toàn miễn phí nếu chưa hài lòng về sản phẩm.",
+    title: "Đổi/ trả hàng miễn phí",
+    body: "Trong vòng 07 ngày kể từ ngày mua, Quý khách được đổi hoặc trả sản phẩm hoàn toàn miễn phí nếu chưa hài lòng về sản phẩm.",
   },
   {
     tag: "30 ngày",

@@ -89,6 +89,10 @@ function setup() {
     cfg.getRange("A9").setValue("(Source of truth = constants in Code.gs. This sheet is for reference.)");
   }
 
+  // Store phone columns as TEXT so leading zeros survive (0777… not 777…).
+  sub.getRange("C2:D").setNumberFormat("@"); // phoneRaw, phoneNorm
+  vou.getRange("D2:D").setNumberFormat("@"); // phoneNorm
+
   var rule = SpreadsheetApp.newDataValidation()
     .requireValueInList(["available", "allocated"], true).build();
   vou.getRange("C2:C").setDataValidation(rule);
@@ -234,7 +238,9 @@ function findRecentClaim_(phoneNorm) {
   var data = sh.getRange(2, 1, n, SUBMISSION_HEADERS.length).getValues();
   var idx = colIdx_(SUBMISSION_HEADERS);
   for (var i = data.length - 1; i >= 0; i--) {
-    if (String(data[i][idx.phoneNorm]) === phoneNorm) {
+    // Re-normalize the stored value: Sheets may have coerced "0777..." to the
+    // number 777... (dropped leading 0), which would break a raw string compare.
+    if (normalizeVNPhone(String(data[i][idx.phoneNorm])) === phoneNorm) {
       return {
         voucherCode: data[i][idx.voucherCode],
         voucherValue: data[i][idx.voucherValue],

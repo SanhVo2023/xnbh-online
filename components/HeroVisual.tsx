@@ -103,7 +103,7 @@ const BADGES = [
   {
     label: "Voucher 300K",
     tint: "bg-gold-500 text-white",
-    pos: "-top-1 left-2 -rotate-3 sm:left-6",
+    pos: "-top-2 left-0 -rotate-3",
     icon: (
       <>
         <path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2 2 2 0 0 0 0 4 2 2 0 0 1-2 2H5a2 2 0 0 1-2-2 2 2 0 0 0 0-4Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
@@ -114,7 +114,7 @@ const BADGES = [
   {
     label: "Bồi hoàn 1000%",
     tint: "bg-royal-500 text-white",
-    pos: "top-12 -right-1 rotate-3 sm:-right-3",
+    pos: "top-9 -right-2 rotate-3",
     icon: (
       <>
         <path d="M12 3 5 6v5c0 4.4 3 8.5 7 9.7 4-1.2 7-5.3 7-9.7V6l-7-3Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
@@ -125,7 +125,7 @@ const BADGES = [
   {
     label: "Giao hàng toàn quốc",
     tint: "bg-emerald-500 text-white",
-    pos: "bottom-14 -left-1 rotate-2 sm:-left-3",
+    pos: "top-[46%] -left-2 -rotate-2",
     icon: (
       <>
         <path d="M2.5 7h10v8h-10zM12.5 10H17l3.5 3.5V15h-8z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
@@ -135,9 +135,21 @@ const BADGES = [
     ),
   },
   {
+    label: "Đầy đủ hóa đơn VAT",
+    tint: "bg-teal-500 text-white",
+    pos: "top-[71%] -right-1 rotate-2",
+    icon: (
+      <>
+        <path d="M7 3h7l5 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+        <path d="M14 3v5h5" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+        <path d="M9 13h6M9 16h4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      </>
+    ),
+  },
+  {
     label: "Miễn phí vận chuyển",
-    tint: "bg-navy-600 text-white",
-    pos: "-bottom-1 right-1 -rotate-2 sm:right-4",
+    tint: "bg-navy-700 text-white",
+    pos: "-bottom-2 left-1 -rotate-2",
     icon: (
       <>
         <path d="M21 8 12 3 3 8l9 5 9-5ZM3 8v8l9 5 9-5V8" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />

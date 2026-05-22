@@ -6,8 +6,8 @@ const BADGES = [
   {
     value: "07",
     unit: "ngày",
-    title: "Đổi mới 1-1",
-    desc: "Đổi sản phẩm mới dễ dàng nếu chưa hài lòng.",
+    title: "Đổi/ trả hàng miễn phí",
+    desc: "Đổi hoặc trả sản phẩm dễ dàng nếu chưa hài lòng.",
     icon: (
       <path
         d="M3 12a9 9 0 0 1 15-6.7L21 8M21 12a9 9 0 0 1-15 6.7L3 16m18-8V4m0 4h-4M3 16v4m0-4h4"
